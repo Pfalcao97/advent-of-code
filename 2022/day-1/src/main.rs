@@ -2,7 +2,7 @@ use std::fs;
 
 fn main() {
     
-    let  contents = fs::read_to_string("input1.txt")
+    let  contents = fs::read_to_string("input.txt")
                                 .expect("input.txt not found."); 
 
     let mut aux = 0;
@@ -25,11 +25,22 @@ fn main() {
     // must be summed to last elf.
     food_sum.push(aux);
     food_sum.sort();
+    food_sum.reverse();
 
-    match food_sum.last() {
-        Some(n) => println!("Most food: {}", n),
+    // Solution for first part:
+    match food_sum.first() {
+        Some(n) => println!("Most calories: {}", n),
         None => println!("No value found.")
     };
-    
+
+    println!("Top three elves: {:?}", &food_sum[..3]);
+    let top_three = &food_sum[..3];
+    let mut total_calories = 0;
+
+    for t in top_three.iter(){
+        total_calories = total_calories + t;
+    }
+
+    println!("Sum of calories for top three: {}", total_calories);
 }
 

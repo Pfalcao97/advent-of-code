@@ -18,25 +18,33 @@ fn main() {
     
 
     let mut priority_sum = 0;
-    for line in contents.lines() {
-
-        let size_of_line = line.chars().count();
-        let (first, second) = line.split_at(size_of_line/2);
+    let mut racksack_repeat:String = "".to_string();
+    for line in contents.lines().enumerate() {
         
-        let mut aux:Vec<char> = Vec::new();
-        for c in first.chars() {
-            if second.contains(c) {
-                aux.push(c);
-            };
-        };
-
-        aux.sort();   // the vector is only really duplicated using
-        aux.dedup();  // .dedup() if its sorted first.
-
-        for c in aux.into_iter() {
-            priority_sum += alphabet.get(&c).unwrap();
+        if line.0%3 == 0{
+            racksack_repeat = line.1.to_string();
+            continue; //skip this iteration
         }
-    };
 
+        let mut char_tracker:Vec<char> = Vec::new();
+        for c in line.1.chars() {
+            if racksack_repeat.contains(c) {
+                char_tracker.push(c);
+            }
+        }
+
+        char_tracker.sort();
+        char_tracker.dedup();
+
+        racksack_repeat = String::from_iter(char_tracker);
+
+        if (line.0 + 1)%3 == 0{
+            let mut equivalency = racksack_repeat.chars();
+            priority_sum += alphabet.get(&equivalency.next().unwrap()).unwrap();
+            continue; //skip this iteration
+        }
+        ;
+    };
     println!("Sum of all priorities: {}.", priority_sum);
+
 }

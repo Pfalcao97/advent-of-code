@@ -41,7 +41,6 @@ fn main() {
     };
 
     let mut stacks = create_stacks(&mut stacks_aux);
-    //println!("Starting as: {:?}", stacks);
 
     for line in parts[1].lines() {
 
@@ -51,20 +50,22 @@ fn main() {
         let from:usize = parsed_moves[1].split(" to ").collect::<Vec<&str>>()[0].parse().unwrap();
         let to:usize = parsed_moves[1].split(" to ").collect::<Vec<&str>>()[1].parse().unwrap();
 
-        for _i in 0..qty {
+        let mut start = stacks.get(&from).unwrap().clone();
 
-            let mut start = stacks.get(&from).unwrap().clone();
-            let aux = start.pop().unwrap();
-
-            stacks.insert(from, start.to_vec());
-
-            let mut finish = stacks.get(&to).unwrap().clone();
-            finish.push(aux);
-
-            stacks.insert(to, finish.to_vec());
+        let mut aux = Vec::new();
+        if start.len() <= (qty - 1) {
+            aux = start.clone();
+        } else {
+            aux = start.split_off(start.len() - qty);
         }
+
+        stacks.insert(from, start.to_vec());
+
+        let mut finish = stacks.get(&to).unwrap().clone();
+        finish.append(&mut aux);
+
+        stacks.insert(to, finish.to_vec());
          
-        //println!("After moving {}, from {} to {}: {:?}", qty,from,to, stacks);
     }
 
     for k in stacks.keys() {

@@ -5,11 +5,11 @@ fn main() {
     let contents = fs::read_to_string("input.txt")
                                 .expect("input.txt not found."); 
 
-    let packet_size:usize = 4;
+    let packet_size:usize = 14;
 
     let mut chars_vectors:Vec<char> = contents.chars().take(packet_size).collect();
 
-    for c in contents.chars().skip(4).enumerate() {
+    for c in contents.chars().skip(packet_size).enumerate() {
 
         let mut auxiliary_vector = chars_vectors.clone();
 
